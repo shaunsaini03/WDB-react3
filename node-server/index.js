@@ -18,13 +18,13 @@ const post2 = {
 }
 
 const post3 = {
-  id: 2,
-  title: "Sheesh 2",
-  body: "A whole secopnd post",
-  comments: ["Low engagement gang"],
+  id: 3,
+  title: "Sheesh 3",
+  body: "A whole third post",
+  comments: [],
 }
 
-let data= {0:post1, 1:post2, 3:post3}
+let data= {1:post1, 2:post2, 3:post3}
 
 
 const app = express();
@@ -39,14 +39,14 @@ app.post('/post', (req, res) => {
   if (data[req.body.id]) {
     throw new Error("Post exists!")
   }
-  const newPost = {id:req.body.id, color:req.body.col, comments:req.body.com, imgid: req.body.imgid}
+  const newPost = {id:parseInt(req.body.id, 10), title: req.body.title, body: req.body.body, comments: []}
   data[req.body.id] = newPost
   res.send(newPost)
 })
 
-app.post('/post/:id/comment', (req, res) => {
-  const post = data[req.params.id]
-  post.comments = post.comments.concat(req.body.newComment)
+app.post('/post/:postId/comment', (req, res) => {
+  const post = data[req.params.postId]
+  post.comments = [...post.comments, req.body.newComment]
   res.send(post)
 })
 
